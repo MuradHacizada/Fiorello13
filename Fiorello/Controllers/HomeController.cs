@@ -25,7 +25,8 @@ namespace Fiorello.Controllers
             HomeVM homeVM = new HomeVM
             {
                 Products = await _db.Products.ToListAsync(),
-                Categories = await _db.Categories.ToListAsync()
+                Categories = await _db.Categories.ToListAsync(),
+               
             };
             return View(homeVM);
         }

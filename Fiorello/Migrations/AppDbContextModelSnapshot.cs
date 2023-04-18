@@ -33,6 +33,44 @@ namespace Fiorello.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Fiorello.Models.Expert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PositionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PositionId");
+
+                    b.ToTable("Experts");
+                });
+
+            modelBuilder.Entity("Fiorello.Models.Position", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Positions");
+                });
+
             modelBuilder.Entity("Fiorello.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -46,6 +84,9 @@ namespace Fiorello.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeactive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -57,6 +98,17 @@ namespace Fiorello.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Fiorello.Models.Expert", b =>
+                {
+                    b.HasOne("Fiorello.Models.Position", "Position")
+                        .WithMany("Experts")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Position");
                 });
 
             modelBuilder.Entity("Fiorello.Models.Product", b =>
@@ -73,6 +125,11 @@ namespace Fiorello.Migrations
             modelBuilder.Entity("Fiorello.Models.Category", b =>
                 {
                     b.Navigation("products");
+                });
+
+            modelBuilder.Entity("Fiorello.Models.Position", b =>
+                {
+                    b.Navigation("Experts");
                 });
 #pragma warning restore 612, 618
         }
